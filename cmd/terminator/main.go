@@ -18,8 +18,11 @@ func main() {
 
 	log.Printf("Scanning for processes executing \"%s\"…", Executable)
 	for _, p := range procs {
-		exe, _ := p.Exe()
-		if Executable == exe {
+		cl, _ := p.CmdlineSlice()
+		if len(cl) < 1 {
+			continue
+		}
+		if Executable == cl[0] {
 			log.Printf("Terminating process with pid %d running \"%s\" now.", p.Pid, Executable)
 			p.Terminate()
 		}
