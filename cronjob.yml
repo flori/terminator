@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: terminator-test
+spec:
+  schedule: "*/2 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+
+          shareProcessNamespace: true
+
+          restartPolicy: OnFailure
+
+          containers:
+
+          - name: terminator
+            image: terminator
+            imagePullPolicy: Never
+            command:
+            - /bin/sh
+            args:
+            - -c
+            - "sleep 60; terminator"
+
+          - name: killme
+            image: killme
+            imagePullPolicy: Never
+

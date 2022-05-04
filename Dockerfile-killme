@@ -1,0 +1,11 @@
+FROM alpine
+
+RUN apk add --no-cache go
+
+WORKDIR /bin
+
+COPY killme.go .
+
+RUN go build -o killme killme.go
+
+CMD [ "/bin/killme", "3600" ]

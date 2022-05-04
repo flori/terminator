@@ -6,10 +6,13 @@ EXECUTABLE ?= "foo"
 
 .PHONY: build build-info
 
-all: setup terminator
+all: setup terminator killme
 
 terminator: cmd/terminator/main.go
 	go build -ldflags "-X main.Executable=${EXECUTABLE}" -o $@ $<
+
+killme: killme.go
+	go build -o $@ $<
 
 fetch:
 	go mod download
@@ -38,3 +41,12 @@ clobber: clean
 
 tags: clean
 	@gotags -tag-relative=false -silent=true -R=true -f $@ . $(GOPATH)
+
+build:
+	@docker build --pull -t terminator -f Dockerfile-terminator .
+	@docker build --pull -t killme -f Dockerfile-killme .
+
+create-cronjob:
+	@kubectl apply -f cronjob.yml
+
+test-kubernetes: build create-cronjob

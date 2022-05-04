@@ -1,0 +1,13 @@
+FROM alpine
+
+RUN apk add go build-base
+
+RUN go install -ldflags "-X main.Executable=/bin/killme" github.com/flori/terminator/cmd/terminator@latest
+
+WORKDIR "root"
+
+ENV PATH="/root/go/bin:${PATH}"
+
+ENTRYPOINT [ "/bin/sh" ]
+
+CMD [ "-c", "sleep 60; terminator" ]

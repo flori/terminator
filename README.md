@@ -15,9 +15,14 @@ was configured and your main container has finished its task.
 go install -ldflags '-X main.Executable=/cloud_sql_proxy' github.com/flori/terminator/cmd/terminator@latest
 ```
 
+## Example
+
+See the cronjob.yml in this repo for a minimal example on how to use this
+program to terminate a process running in a sidecar container.
+
 ## Author
 
-Florian Frank mailto:flori@ping.de
+Florian Frank <mailto:flori@ping.de>
 
 ## License
 
